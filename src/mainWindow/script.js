@@ -1,15 +1,18 @@
 window.onload= ()=>{
     document.body.classList.remove('preload');
 }
-
-
+const MicRecorder = require('mic-recorder-to-mp3');
 document.addEventListener('DOMContentLoaded', ()=>{
 
     const { ipcRenderer } = require('electron');
 
     // Declarations
 
-    
+
+    const recorder = new MicRecorder({
+        bitRate: 128
+    });
+
     const display = document.querySelector("#display");
     const record = document.querySelector("#record");
     const micInput = document.querySelector("#mic");
@@ -54,8 +57,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     record.addEventListener("click", ()=>{
         updateButtonTo(!isRecording);
-        handleRecord(isRecording);
+        // handleRecord(isRecording);
 
+        micRecorderStart(isRecording);
         isRecording = !isRecording;
     });
 
@@ -77,6 +81,35 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     saveData();
                 };
             })
+        }
+    }
+    function micRecorderStart(recording) {
+        if(recording) {
+            //stop
+            recorder
+                .stop()
+                .getMp3().then(([buffer, blob]) => {
+                // do what ever you want with buffer and blob
+                // Example: Create a mp3 file and play
+                const file = new File(buffer, 'me-at-thevoice.mp3', {
+                    type: blob.type,
+                    lastModified: Date.now()
+                });
+
+                const player = new Audio(URL.createObjectURL(file));
+                player.play();
+
+            }).catch((e) => {
+                alert('We could not retrieve your message');
+                console.log(e);
+            });
+        } else{
+            //start
+            recorder.start().then(() => {
+                // something else
+            }).catch((e) => {
+                console.error(e);
+            });
         }
     }
 
@@ -112,4 +145,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         return `${hours}:${minutes}:${seconds}:${mili}`
     }
 
-})
+
+
+
+});
