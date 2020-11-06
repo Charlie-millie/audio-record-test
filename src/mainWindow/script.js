@@ -81,7 +81,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 
     function saveData(){
-        const blob = new Blob(chunks, {"type": "audio/mp3"});
+        // const blob = new Blob(chunks, {"type": "audio/mp3"});
+        const blob = new Blob(chunks, {"type": "audio/webm; codecs=opus"});
         console.log(blob)
         
         blob.arrayBuffer().then(blobBuffer=>{

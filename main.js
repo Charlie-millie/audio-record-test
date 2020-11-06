@@ -87,7 +87,8 @@ ipcMain.on("open_new_window", ()=>{
 
 ipcMain.on("save_buffer", (e, buffer)=>{
     const filePath = path.join(destination, `${Date.now()}` );
-    fs.writeFileSync(`${filePath}.mp3`, buffer);
+    // fs.writeFileSync(`${filePath}.mp3`, buffer);
+    fs.writeFileSync(`${filePath}.webm`, buffer);
 });
 
 ipcMain.handle('show-dialog', async (event)=>{
