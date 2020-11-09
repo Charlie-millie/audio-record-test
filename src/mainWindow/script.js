@@ -60,10 +60,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     record.addEventListener("click", ()=>{
         updateButtonTo(!isRecording);
-        // handleRecord(isRecording);
+        handleRecord(isRecording);
 
         // micRecorderStart(isRecording);
-        desktopCapturerTest(isRecording);
+        // desktopCapturerTest(isRecording);
         isRecording = !isRecording;
     });
 
@@ -82,7 +82,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     chunks.push(event.data);
                 };
                 mediaRecorder.onstop = (event)=>{
-                    saveData();
+                    // saveData();
+                    const blob = new Blob(chunks, {
+                        type : "audio/mp3"
+                    });
+                    const player = new Audio(URL.createObjectURL(blob));
+                    player.play();
                 };
             })
         }
