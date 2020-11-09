@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, globalShortcut, shell, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, globalShortcut, shell, dialog, systemPreferences } = require('electron');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
@@ -65,6 +65,13 @@ function createWindow() {
     ];
     const menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);
+
+    win.webContents.openDevTools();
+
+    console.log("systemPreferences: ", systemPreferences);
+    console.log("getMediaAccessStatus screen: ", systemPreferences.getMediaAccessStatus('screen'));
+    console.log("getMediaAccessStatus microphone: ", systemPreferences.getMediaAccessStatus('microphone'));
+    // console.log("askForMediaAccess: ", systemPreferences.askForMediaAccess('microphone'));
 }
 
 app.whenReady().then(()=>{
