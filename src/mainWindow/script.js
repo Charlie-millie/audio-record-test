@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 micInput.appendChild(option);
             }
         })
-    })
+    });
+
+    checkPermission();
 
     micInput.addEventListener("change", (event)=>{
         selectedDeviceId = event.target.value;
@@ -221,6 +223,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
         return `${hours}:${minutes}:${seconds}:${mili}`
     }
 
+    function checkPermission() {
+        navigator.permissions.query({name:'microphone'}).then((result) => {
+            console.log("permission result", result);
+            /*if (result.state == 'granted') {
+            } else if (result.state == 'prompt') {
+            }*/
+        });
+    }
 
 
 

@@ -68,10 +68,29 @@ function createWindow() {
 
     win.webContents.openDevTools();
 
-    console.log("systemPreferences: ", systemPreferences);
+   /* console.log("systemPreferences: ", systemPreferences);
+    systemPreferences.getMediaAccessStatus('screen');
+    systemPreferences.getMediaAccessStatus('microphone');
     console.log("getMediaAccessStatus screen: ", systemPreferences.getMediaAccessStatus('screen'));
-    console.log("getMediaAccessStatus microphone: ", systemPreferences.getMediaAccessStatus('microphone'));
+    console.log("getMediaAccessStatus microphone: ", systemPreferences.getMediaAccessStatus('microphone'));*/
     // console.log("askForMediaAccess: ", systemPreferences.askForMediaAccess('microphone'));
+    getMediaAccess();
+
+
+}
+
+
+
+async function getMediaAccess() {
+    const status = await systemPreferences.getMediaAccessStatus("microphone");
+    console.log("Current microphone access status:", status);
+
+    if (status === "not-determined") {
+        const success = await systemPreferences.askForMediaAccess("microphone");
+        console.log("valueOf:", success.valueOf());
+        console.log("Result of microphone access:", success.valueOf() ? "granted" : "denied");
+        return success.valueOf();
+    }
 }
 
 app.whenReady().then(()=>{
